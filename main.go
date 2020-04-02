@@ -19,7 +19,7 @@ func main() {
 	logger = log.NewFactory(zapLogger)
 
 	// OpenTracingの初期化
-	tracer, closer := tracing.Init("formatter", logger)
+	tracer, closer := tracing.Init("hello-gin", logger)
 	defer closer.Close()
 	opentracing.SetGlobalTracer(tracer) // Jaeger tracer のグローバル変数を初期化
 
