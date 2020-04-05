@@ -6,10 +6,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	opentracing "github.com/opentracing/opentracing-go"
+	"github.com/opentracing/opentracing-go/ext"
 )
 
 func ping(c *gin.Context) {
-	span, _ := opentracing.StartSpanFromContext(c, "ping")
+	spanCtx, _ := tracer.Extract(opentracing.HTTPHeaders, opentracing.HTTPHeadersCarrier(c.Request.Header))
+	span := tracer.StartSpan("format", ext.RPCServerOption(spanCtx))
 	defer span.Finish()
 
 	hostname, _ := os.Hostname()
