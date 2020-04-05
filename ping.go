@@ -13,7 +13,7 @@ func ping(c *gin.Context) {
 	spanCtx, _ := tracer.Extract(opentracing.HTTPHeaders,
 		opentracing.HTTPHeadersCarrier(c.Request.Header),
 	)
-	span := tracer.StartSpan("format", ext.RPCServerOption(spanCtx))
+	span := tracer.StartSpan("ping", ext.RPCServerOption(spanCtx))
 	defer span.Finish()
 
 	hostname, _ := os.Hostname()
