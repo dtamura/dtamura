@@ -1,6 +1,8 @@
 package main
 
 import (
+	"io"
+
 	"github.com/dtamura/hello-gin/lib/log"
 	"github.com/dtamura/hello-gin/lib/tracing"
 	"github.com/gin-gonic/gin"
@@ -19,7 +21,8 @@ func main() {
 	logger = log.NewFactory(zapLogger)
 
 	// OpenTracingの初期化
-	tracer, closer := tracing.Init("hello-gin", logger)
+	var closer io.Closer
+	tracer, closer = tracing.Init("hello-gin", logger)
 	defer closer.Close()
 	opentracing.SetGlobalTracer(tracer) // Jaeger tracer のグローバル変数を初期化
 

@@ -10,7 +10,9 @@ import (
 )
 
 func ping(c *gin.Context) {
-	spanCtx, _ := tracer.Extract(opentracing.HTTPHeaders, opentracing.HTTPHeadersCarrier(c.Request.Header))
+	spanCtx, _ := tracer.Extract(opentracing.HTTPHeaders,
+		opentracing.HTTPHeadersCarrier(c.Request.Header),
+	)
 	span := tracer.StartSpan("format", ext.RPCServerOption(spanCtx))
 	defer span.Finish()
 
