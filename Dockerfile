@@ -1,8 +1,13 @@
-FROM golang:1.14.0
+FROM golang:1.14.0 as build
 
 WORKDIR /go/src/github.com/dtamura/hello-gin
 COPY . .
-RUN go get -d -v .
-RUN go build
+RUN go get -d -v  .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o app
 
-ENTRYPOINT [ "./hello-gin" ]
+FROM alpine:3.11.5
+RUN apk --no-cache add ca-certificates
+WORKDIR /app
+COPY --from=build /go/src/github.com/dtamura/hello-gin/app .
+
+CMD [ "./app" ]
